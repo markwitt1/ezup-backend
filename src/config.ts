@@ -4,4 +4,7 @@ export const maxFileSize =
 export const maxFileCount =
   parseInt(process.env.MAX_FILE_COUNT as string) || 100;
 
+export const uploadDirectory =
+  process.env.UPLOAD_DIRECTORY || `${process.cwd()}/uploads`;
+
 export const port = process.env.PORT || 3000;
