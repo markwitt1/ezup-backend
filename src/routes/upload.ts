@@ -3,6 +3,7 @@ import AdmZip from "adm-zip";
 import uniqueId from "lodash/uniqueId";
 import { flatMap } from "lodash";
 import { uploadDirectory } from "../config";
+import path from "path";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.post("/", (req, res) => {
   }
   const zip = new AdmZip();
   const id = uniqueId();
-  const outPath = `${uploadDirectory}/${id}.zip`;
+  const outPath = path.join(uploadDirectory, `${id}.zip`);
 
   for (const file of flatMap(Object.values(req.files))) {
     zip.addFile(file.name, file.data);
