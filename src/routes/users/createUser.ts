@@ -15,17 +15,24 @@ router.post("/", async (req: any, res) => {
 
   if (req.body.username && req.body.password) {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const dbUser = await new User({
-      username: req.body.username,
-      hashedPassword,
-    }).save();
+    try {
+      const dbUser = await new User({
+        username: req.body.username,
+        hashedPassword,
+      }).save();
 
-    if (dbUser) {
-      const token = generateAccessToken(dbUser);
-      res.json({
-        success: true,
-        message: "User created",
-        data: { token },
+      if (dbUser) {
+        const token = generateAccessToken(dbUser);
+        res.json({
+          success: true,
+          message: "User created",
+          data: { token },
+        });
+      }
+    } catch (e) {
+      res.status(400).json({
+        success: false,
+        message: "Error creating user",
       });
     }
   }
