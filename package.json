@@ -5,9 +5,10 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "nodemon src/app.ts",
-    "prod": "node dist/app.js",
+    "start": "node dist/app.js",
     "build": "tsc",
-    "build:client": "npm run build --prefix client"
+    "build:client": "npm run build --prefix client",
+    "postinstall": "npm run build;  npm run build:client"
   },
   "author": "",
   "license": "ISC",

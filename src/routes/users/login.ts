@@ -30,7 +30,6 @@ router.post("/", async (req: any, res) => {
       }
 
       const token = generateAccessToken(dbUser);
-      console.log(token);
       return res.json({
         success: true,
         message: "User logged in",
