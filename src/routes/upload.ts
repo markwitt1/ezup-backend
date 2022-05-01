@@ -6,6 +6,7 @@ import { uploadDirectory } from "../config";
 import path from "path";
 import mongoose from "mongoose";
 import User from "../models/User";
+import { verifyToken } from "../utils/authenticateToken";
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.post("/", (req, res) => {
   for (const file of flatMap(Object.values(req.files))) {
     zip.addFile(file.name, file.data);
   }
-  zip.writeZip(outPath, (err) => {
+  zip.writeZip(outPath, async (err) => {
     if (err) {
       return res.status(500).json({
         success: false,
@@ -31,14 +32,24 @@ router.post("/", (req, res) => {
       });
     }
 
-    const user = (req as any).user;
-    if (user) {
-      const dbUser = User.findOne({ _id: user._id });
-      dbUser.update({
-        $push: {
-          files: outPath,
-        },
-      });
+    let user = undefined;
+    if (req.headers.authorization) {
+      try {
+        user = await verifyToken(req.headers.authorization.split(" ")[1]);
+      } catch (err) {}
+      if (user) {
+        console.log(user);
+        console.log(`${id}.zip`);
+        const updated = await User.findOneAndUpdate(
+          { _id: user._id },
+          {
+            $push: {
+              uploads: `${id}.zip`,
+            },
+          }
+        ).exec();
+        console.log(updated);
+      }
     }
 
     res.json({
@@ -46,6 +57,7 @@ router.post("/", (req, res) => {
       message: "Files uploaded successfully.",
       data: {
         id,
+        addedToUser: !!user,
       },
     });
   });

@@ -10,16 +10,16 @@ import { Container } from "@mui/material";
 import useStore from "../useStore";
 interface Props {}
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const login = useStore((state) => state.login);
+  const register = useStore((state) => state.register);
   const setPage = useStore((state) => state.setPage);
 
   return (
     <Container>
-      <DialogTitle>Login</DialogTitle>
+      <DialogTitle>Register</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -47,12 +47,12 @@ export default function LoginPage() {
         <Button onClick={() => setPage("upload")}>Cancel</Button>
         <Button
           onClick={() => {
-            login(username, password).then((success) => {
+            register(username, password).then((success) => {
               if (success) setPage("upload");
             });
           }}
         >
-          Login
+          Register
         </Button>
       </DialogActions>
     </Container>

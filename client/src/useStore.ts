@@ -11,7 +11,7 @@ interface AppState {
 }
 
 const logInRequest = (username: string, password: string) =>
-  axios.post(`${process.env.API_URL || ""}/login`, {
+  axios.post(`${process.env.API_URL || ""}/users/login`, {
     username,
     password,
   });
@@ -32,7 +32,7 @@ const useStore = create<AppState>((set) => ({
     return res.data.success;
   },
   register: async (username: string, password: string) => {
-    const res = await axios.post("/createUser", {
+    const res = await axios.post("/users/createUser", {
       username,
       password,
     });

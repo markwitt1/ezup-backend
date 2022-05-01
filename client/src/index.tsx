@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import useStore from "./useStore";
 
 axios.interceptors.request.use(function (config) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("jwtToken");
   if (token) {
     config.headers!.Authorization = `Bearer ${token}`;
   }

@@ -2,6 +2,8 @@ import { Box, Button, Container, Tab, Tabs, Typography } from "@mui/material";
 import React, { SyntheticEvent } from "react";
 import LoginPage from "./components/LoginPage";
 import LoginDialog from "./components/LoginPage";
+import MyUploadsPage from "./components/MyUploadsPage";
+import RegisterPage from "./components/RegisterPage";
 import Download from "./Download";
 import Upload from "./Upload";
 import useStore from "./useStore";
@@ -16,6 +18,10 @@ const App = (props: Props) => {
 
   if (page === "login") {
     return <LoginPage />;
+  } else if (page === "register") {
+    return <RegisterPage />;
+  } else if (page === "my-uploads") {
+    return <MyUploadsPage />;
   }
 
   return (
@@ -24,9 +30,13 @@ const App = (props: Props) => {
         <>
           <Typography>Logged in as {username}</Typography>
           <Button onClick={() => logout()}>Logout</Button>
+          <Button onClick={() => setPage("my-uploads")}>My uploads</Button>
         </>
       ) : (
-        <Button onClick={() => setPage("login")}>Login</Button>
+        <>
+          <Button onClick={() => setPage("login")}>Login</Button>
+          <Button onClick={() => setPage("register")}>Register</Button>
+        </>
       )}
       <Tabs
         value={page === "upload" ? 0 : 1}

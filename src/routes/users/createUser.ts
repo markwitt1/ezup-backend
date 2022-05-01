@@ -21,7 +21,6 @@ router.post("/", async (req: any, res) => {
     }).save();
 
     if (dbUser) {
-      console.log(dbUser);
       const token = generateAccessToken(dbUser);
       res.json({
         success: true,

@@ -3,10 +3,9 @@ import fileUpload from "express-fileupload";
 import path from "path";
 import dotenv from "dotenv";
 
+import usersRoute from "./routes/users";
 import uploadRoute from "./routes/upload";
 import downloadRoute from "./routes/download";
-import loginRoute from "./routes/users/login";
-import createUserRoute from "./routes/users/createUser";
 
 import { port } from "./config";
 import mongoose from "mongoose";
@@ -26,10 +25,9 @@ app.use(fileUpload());
 
 app.use(express.static(path.resolve(__dirname, "../client/build")));
 
-app.use("/login", loginRoute);
+app.use("/users", usersRoute);
 app.use("/upload", uploadRoute);
 app.use("/download", downloadRoute);
-app.use("/createUser", createUserRoute);
 
 app.listen(port, function () {
   console.log(`EZUP Server is listening on port ${port}`);
