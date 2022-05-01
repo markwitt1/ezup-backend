@@ -1,34 +1,47 @@
 import { Box, Button, Container, Tab, Tabs, Typography } from "@mui/material";
 import React, { SyntheticEvent } from "react";
-import LoginDialog from "./components/LoginDialog";
+import LoginPage from "./components/LoginPage";
+import LoginDialog from "./components/LoginPage";
 import Download from "./Download";
 import Upload from "./Upload";
+import useStore from "./useStore";
 
 type Props = {};
 
 const App = (props: Props) => {
-  const [tabIndex, setTabIndex] = React.useState(0);
-  const [loginOpen, setLoginOpen] = React.useState(false);
+  const page = useStore((state) => state.page);
+  const setPage = useStore((state) => state.setPage);
+  const username = useStore((state) => state.username);
+  const logout = useStore((state) => state.logout);
 
-  const [username, setUsername] = React.useState<string | null>(null);
-
-  const toggleLoginOpen = () => setLoginOpen(!loginOpen);
-  const handleLoginSubmit = (values) => {};
+  if (page === "login") {
+    return <LoginPage />;
+  }
 
   return (
-    <Container maxWidth="sm">
-      <Button onClick={toggleLoginOpen}>Login</Button>
-      <LoginDialog open={loginOpen} handleClose={toggleLoginOpen} submit={} />
+    <Container>
+      {username ? (
+        <>
+          <Typography>Logged in as {username}</Typography>
+          <Button onClick={() => logout()}>Logout</Button>
+        </>
+      ) : (
+        <Button onClick={() => setPage("login")}>Login</Button>
+      )}
       <Tabs
-        value={tabIndex}
+        value={page === "upload" ? 0 : 1}
         onChange={(ev, i) => {
-          setTabIndex(i);
+          if (i === 0) {
+            setPage("upload");
+          } else {
+            setPage("download");
+          }
         }}
       >
         <Tab label="Upload" />
         <Tab label="Download" />
       </Tabs>
-      {tabIndex === 0 ? <Upload /> : <Download />}
+      {page === "upload" ? <Upload /> : <Download />}
     </Container>
   );
 };

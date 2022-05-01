@@ -4,6 +4,8 @@ import uniqueId from "lodash/uniqueId";
 import { flatMap } from "lodash";
 import { uploadDirectory } from "../config";
 import path from "path";
+import mongoose from "mongoose";
+import User from "../models/User";
 
 const router = express.Router();
 
@@ -26,6 +28,16 @@ router.post("/", (req, res) => {
       return res.status(500).json({
         success: false,
         message: "Error writing zip file",
+      });
+    }
+
+    const user = (req as any).user;
+    if (user) {
+      const dbUser = User.findOne({ _id: user._id });
+      dbUser.update({
+        $push: {
+          files: outPath,
+        },
       });
     }
 

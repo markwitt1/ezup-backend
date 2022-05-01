@@ -22,7 +22,7 @@ router.post("/", async (req: any, res) => {
 
     if (dbUser) {
       console.log(dbUser);
-      const token = generateAccessToken(dbUser.username);
+      const token = generateAccessToken(dbUser);
       res.json({
         success: true,
         message: "User created",

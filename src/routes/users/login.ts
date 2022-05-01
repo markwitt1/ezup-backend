@@ -18,7 +18,7 @@ router.post("/", async (req: any, res) => {
     const dbUser = await User.findOne({
       username: req.body.username,
     }).exec();
-
+    console.log(dbUser);
     if (dbUser) {
       const isPasswordValid = await bcrypt.compare(
         req.body.password,
@@ -31,13 +31,18 @@ router.post("/", async (req: any, res) => {
         });
       }
 
-      const token = generateAccessToken(dbUser.username);
-      res.json({
+      const token = generateAccessToken(dbUser);
+      console.log(token);
+      return res.json({
         success: true,
         message: "User logged in",
         data: { token },
       });
     }
+    return res.json({
+      success: false,
+      message: "User not found",
+    });
   }
 });
 

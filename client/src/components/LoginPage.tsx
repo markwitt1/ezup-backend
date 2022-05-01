@@ -6,17 +6,19 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-interface Props {
-  open: boolean;
-  handleClose: () => void;
-  submit: () => void;
-}
+import { Container } from "@mui/material";
+import useStore from "../useStore";
+interface Props {}
 
-export default function FormDialog({ open, handleClose, submit }: Props) {
+export default function LoginPage() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const login = useStore((state) => state.login);
+  const setPage = useStore((state) => state.setPage);
+
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Container>
       <DialogTitle>Login</DialogTitle>
       <DialogContent>
         <TextField
@@ -42,9 +44,17 @@ export default function FormDialog({ open, handleClose, submit }: Props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={submit}>Subscribe</Button>
+        <Button>Cancel</Button>
+        <Button
+          onClick={() => {
+            login(username, password).then((success) => {
+              if (success) setPage("upload");
+            });
+          }}
+        >
+          Subscribe
+        </Button>
       </DialogActions>
-    </Dialog>
+    </Container>
   );
 }
