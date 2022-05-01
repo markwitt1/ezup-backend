@@ -14,11 +14,9 @@ router.post("/", async (req: any, res) => {
   }
 
   if (req.body.username && req.body.password) {
-    console.log(req.body);
     const dbUser = await User.findOne({
       username: req.body.username,
     }).exec();
-    console.log(dbUser);
     if (dbUser) {
       const isPasswordValid = await bcrypt.compare(
         req.body.password,

@@ -11,7 +11,6 @@ router.get("/", authenticateToken, async (req: any, res) => {
   const dbUser = await User.findOne({
     _id: req.user._id,
   }).exec();
-  console.log(dbUser);
   if (dbUser) {
     return res.json({
       success: true,

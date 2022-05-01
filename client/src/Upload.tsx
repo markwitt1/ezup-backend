@@ -28,16 +28,12 @@ const Upload = (props: Props) => {
       formData.append("file", files[file]);
     }
 
-    console.log(formData);
-
     const res = await axios.post("/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(res);
     if (res.status === 200) {
-      console.log(res.data.data.id);
       setZipID(res.data.data.id);
     }
   }, [files]);

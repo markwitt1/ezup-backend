@@ -38,8 +38,6 @@ router.post("/", (req, res) => {
         user = await verifyToken(req.headers.authorization.split(" ")[1]);
       } catch (err) {}
       if (user) {
-        console.log(user);
-        console.log(`${id}.zip`);
         const updated = await User.findOneAndUpdate(
           { _id: user._id },
           {
@@ -48,7 +46,6 @@ router.post("/", (req, res) => {
             },
           }
         ).exec();
-        console.log(updated);
       }
     }
 
